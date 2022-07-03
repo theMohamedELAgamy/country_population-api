@@ -13,10 +13,15 @@ use  App\Services\CountryService;
     public function syncCountries(){
         $countries=$this->countryservice->fetchCountriesApi();
         foreach($countries['data'] as  $country){
-           Country::updateOrCreate([
+            dd($country['populationCounts']);
+           Country::updateOrCreate([['code'=>$country['code']],[
+            'name'=>$country['country'],
             
-           ])
-        }
+           ]
+           
+
+        ]);
+         };
        
         
     }

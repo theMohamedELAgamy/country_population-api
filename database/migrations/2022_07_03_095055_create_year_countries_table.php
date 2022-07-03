@@ -3,8 +3,9 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
-class CreateCountriesTable extends Migration
+use  App\Models\Country;
+use  App\Models\Year;
+class CreateYearCountriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +14,11 @@ class CreateCountriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('countries', function (Blueprint $table) {
+        Schema::create('year_countries', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('code');
             $table->timestamps();
+            $table->foreignIdFor(Country::class,'country_id');
+            $table->foreignIdFor(Year::class,'year_id');
         });
     }
 
@@ -28,6 +29,6 @@ class CreateCountriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('countries');
+        Schema::dropIfExists('year_countries');
     }
 }
