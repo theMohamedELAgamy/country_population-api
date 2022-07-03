@@ -20,5 +20,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix('v1')->group(function(){
     
     Route::get('sync_countries', [CountryController::class, 'syncCountries']);
-    // Route::apiResource('country',HolidayController::class);
+    Route::get('countries',[CountryController::class, 'getAll']);
+    Route::get('country/{country_id}', [CountryController::class, 'getCountry']);
+    Route::get('country/max', [CountryController::class, 'getMaxCountry']);
+    Route::get('country/min', [CountryController::class, 'getMinCountry']);
 });

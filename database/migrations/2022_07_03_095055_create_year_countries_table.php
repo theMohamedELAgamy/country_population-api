@@ -19,6 +19,7 @@ class CreateYearCountriesTable extends Migration
             $table->timestamps();
             $table->foreignIdFor(Country::class,'country_id');
             $table->foreignIdFor(Year::class,'year_id');
+            $table->bigInteger('population');
         });
     }
 

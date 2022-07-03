@@ -19,11 +19,12 @@ class CountryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function syncCountries(){
-        $this->country->syncCountries();
+        return($this->country->syncCountries());
     }
-    public function index()
+    public function getAll()
     {
-        //
+        return($this->country->listCountries());
+        
     }
 
     /**
@@ -43,9 +44,23 @@ class CountryController extends Controller
      * @param  \App\Models\Country  $country
      * @return \Illuminate\Http\Response
      */
-    public function show(Country $country)
+    public function getCountry($country_id)
     {
-        //
+        dd($country_id);
+        return($this->country->getOneCountry($country_id));
+    }
+
+
+    public function getMaxCountry()
+    {
+        return($this->country->maxCountry());
+    }
+
+
+
+    public function getminCountry()
+    {
+        return($this->country->minCountry());
     }
 
     /**
