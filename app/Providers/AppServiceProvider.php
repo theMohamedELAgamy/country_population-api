@@ -3,7 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-
+use  App\Repository\iCountryRepository;
+use  App\Repository\CountryRepository;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -13,7 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(iCountryRepository::class, CountryRepository::class);
     }
 
     /**

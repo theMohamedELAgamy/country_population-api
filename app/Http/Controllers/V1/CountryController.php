@@ -6,16 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCountryRequest;
 use App\Http\Requests\UpdateCountryRequest;
 use App\Models\Country;
-
+use  App\Repository\iCountryRepository;
 class CountryController extends Controller
 {
+    public $country;
+    public function __construct(iCountryRepository $country) {
+        $this->country = $country;
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function syncCountries(){
-        
+        $this->country->syncCountries();
     }
     public function index()
     {
