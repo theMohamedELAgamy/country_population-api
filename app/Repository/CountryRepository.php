@@ -35,9 +35,6 @@ use  App\Http\Resources\V1\CountryResource;
                         ]    
                         );
            
-           
-     
-                
                 YearCountry::updateOrCreate(['country_id'=>$c_record->id,'year_id'=>$year_record->id],[
                     'country_id'=>$c_record->id,
                     'year_id'=>$year_record->id,
@@ -65,6 +62,8 @@ use  App\Http\Resources\V1\CountryResource;
         $data['countries']=$countries;
         return response( $data,200);
     }
+
+    
     public function  getOneCountry($country_id){
         $country=Country::findOrFail($country_id);
         return response([$country->name,$country->yearcountry],200);
