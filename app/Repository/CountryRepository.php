@@ -18,13 +18,20 @@ use  App\Http\Resources\V1\CountryResource;
     public function syncCountries(){
         $countries=$this->countryservice->fetchCountriesApi();
         $countries=$countries['data'];
-        $result=[];
+        $countryArray=[];
+        $yearArray=[];
         foreach ($countries as $country) {
+            foreach ($country["populationCounts"] as $year) {
+                $record=['country'=>$country['code']]
+               array_push($yearArray,$year);
+            }
+            dd($yearArray);
             unset($country["populationCounts"]);
-            array_push($result,$country);
+            array_push($countryArray,$country);
         };
-        // dd($result);
-        Country::upsert($result,['code']);
+        
+        Country::upsert($countryArray,['code']);
+        Year::upsert($yearArray,['year']);
         dd('here');
         try{
         foreach($countries as  $country){
