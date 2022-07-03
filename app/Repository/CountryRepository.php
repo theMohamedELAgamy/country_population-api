@@ -17,9 +17,11 @@ use  App\Http\Resources\V1\CountryResource;
 
     public function syncCountries(){
         $countries=$this->countryservice->fetchCountriesApi();
+        $countries=$countries['data'];
+        $countries=array_slice($countries,0,5);
         
         try{
-        foreach($countries['data'] as  $country){
+        foreach($countries as  $country){
                 $c_record=Country::updateOrCreate(['code'=>$country['code']],[
                     'code'=>$country['code'],
                     'name'=>$country['country'],
@@ -64,26 +66,20 @@ use  App\Http\Resources\V1\CountryResource;
         return response( $data,200);
     }
     public function  getOneCountry($country_id){
-        
         $country=Country::findOrFail($country_id);
-        return response([$country,$country->yearcountry],200);
+        return response([$country->name,$country->yearcountry],200);
         
     }
 
-    public function minCountry(){
-        $population=YearCountry::where('year_id',58)->min('population');
-        $country=YearCountry::where('population',$population)->first();
-         $country=Country::findOrFail($country['country_id']);
-         return response([$country,$population],200);
 
-    }
-
-    public function maxCountry(){
-
-        $population=YearCountry::where('year_id',58)->max('population');
-       $country=YearCountry::where('population',$population)->first();
-        $country=Country::findOrFail($country['country_id']);
-        return response([$country,$population],200);
+    public function maxminCountry(){
+        $minpopulation=YearCountry::where('year_id',58)->min('population');
+        $mincountry=YearCountry::where('population',$minpopulation)->first();
+         $mincountry=Country::findOrFail($mincountry['country_id']);
+        $maxpopulation=YearCountry::where('year_id',58)->max('population');
+       $maxcountry=YearCountry::where('population',$maxpopulation)->first();
+        $maxcountry=Country::findOrFail($maxcountry['country_id']);
+        return response(['min country'=>['Country'=>$mincountry->name,'min population'=>$minpopulation],'max country'=>['Country'=>$maxcountry->name,'max population'=>$maxpopulation]],200);
         
     }
 

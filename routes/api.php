@@ -23,6 +23,5 @@ Route::prefix('v1')->group(function(){
     Route::get('countries',[CountryController::class, 'getAll']);
     Route::get('country/{country_id}', [CountryController::class, 'getCountry']);
  
-    Route::get('countrymax', [CountryController::class, 'getMaxCountry']);
-    Route::get('countrymin', [CountryController::class, 'getMinCountry']);
+    Route::get('maxandmincountry', [CountryController::class, 'getMaxAndMinCountry']);
 });

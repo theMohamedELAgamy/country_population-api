@@ -45,17 +45,12 @@ class CountryController extends Controller
      * @param  \App\Models\Country  $country
      * @return \Illuminate\Http\Response
      */
-    public function getCountry($country_id)
-    {
-        
-        return($this->country->getOneCountry($country_id));
-    }
 
 
-    public function getMaxCountry()
+    public function getMaxAndMinCountry()
     {
         
-        return($this->country->maxCountry());
+        return($this->country->maxminCountry());
     }
 
 
