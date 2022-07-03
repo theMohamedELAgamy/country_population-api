@@ -22,17 +22,18 @@ use  App\Http\Resources\V1\CountryResource;
         $yearArray=[];
         foreach ($countries as $country) {
             foreach ($country["populationCounts"] as $year) {
-                $record=['country'=>$country['code']]
-               array_push($yearArray,$year);
+                $record=['country'=>$country['code'],'year'=>$year['year'],'population'=>$year['value']];
+               array_push($yearArray,$record);
             }
-            dd($yearArray);
+           
             unset($country["populationCounts"]);
             array_push($countryArray,$country);
         };
         
-        Country::upsert($countryArray,['code']);
-        Year::upsert($yearArray,['year']);
-        dd('here');
+        Country::upsert($countryArray,'code',['iso3']);
+       
+        YearCountry::upsert($yearArray,['year','country'],['population']);
+        
         try{
         foreach($countries as  $country){
            
@@ -40,7 +41,7 @@ use  App\Http\Resources\V1\CountryResource;
              {   $year_record=Year::updateOrCreate(['year'=>$year['year']],[
                             'year'=>$year['year'],
                             
-                        ]    
+                        ]       
                         );
            
            

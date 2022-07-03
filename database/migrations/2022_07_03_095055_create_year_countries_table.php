@@ -17,8 +17,10 @@ class CreateYearCountriesTable extends Migration
         Schema::create('year_countries', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->foreignIdFor(Country::class,'country_id');
-            $table->foreignIdFor(Year::class,'year_id');
+            $table->string('year');
+            $table->string('country');
+            // $table->foreignIdFor(Country::class,'country');
+            // $table->foreignIdFor(Year::class,'year');
             $table->bigInteger('population');
         });
     }
