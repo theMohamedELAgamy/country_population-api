@@ -4,7 +4,10 @@ use  App\Repository\iCountryRepository;
 use  App\Services\CountryService;
 use  App\Models\Country;
 use  App\Models\Year;
+use Illuminate\Http\Response;
+
 use  App\Models\YearCountry;
+use  App\Http\Resources\V1\CountryResource;
  class CountryRepository implements iCountryRepository{
 
     public $countryservice;
@@ -14,6 +17,7 @@ use  App\Models\YearCountry;
 
     public function syncCountries(){
         $countries=$this->countryservice->fetchCountriesApi();
+        
         try{
         foreach($countries['data'] as  $country){
                 $c_record=Country::updateOrCreate(['code'=>$country['code']],[
@@ -21,33 +25,29 @@ use  App\Models\YearCountry;
                     'name'=>$country['country'],
                 ]    
                 );
-            };
-            foreach($countries['data'] as  $country){
+            ;
                 foreach($country['populationCounts'] as $year )
              {   $year_record=Year::updateOrCreate(['year'=>$year['year']],[
                             'year'=>$year['year'],
                             
                         ]    
-                        );}
-            };
+                        );
            
-            foreach($countries['data'] as  $country){
-                $c_record=Country::where('code', $country['code'])->firstOrFail();
-                foreach($country['populationCounts'] as $year )
-             {   
-                $year_record=Year::where('year', $year['year'])->firstOrFail();
+           
+     
+                
                 YearCountry::updateOrCreate(['country_id'=>$c_record->id,'year_id'=>$year_record->id],[
                     'country_id'=>$c_record->id,
                     'year_id'=>$year_record->id,
                     'population'=>$year['value']
                     
                 ]    
-                );
+                );}}
                
-            };
+            ;
         
                 
-            }
+            
         }catch(exception $e){
             return response(['internal server error'],500);
         }
@@ -56,28 +56,34 @@ use  App\Models\YearCountry;
        
         
     }
-    public function listCountries(){
+    public function listCountries($request){
         $per_page=50;
         if($request->has('per_page'))  $per_page=$request->per_page;
         $countries = Country::paginate($per_page);
         $data['countries']=$countries;
-        return response($data,200);
+        return response( $data,200);
     }
     public function  getOneCountry($country_id){
-        dd($country_id);
-        YearCountry::where('country_id',$country);
+        
+        $country=Country::findOrFail($country_id);
+        return response([$country,$country->yearcountry],200);
         
     }
-    public function minCouuntry(){
-        $yearcountry=YearCountry::where('year',2018)->max('population');
-        $country=Country::findOrFail($yearcountry->country_id);
-        return response($country,200);
+
+    public function minCountry(){
+        $population=YearCountry::where('year_id',58)->min('population');
+        $country=YearCountry::where('population',$population)->first();
+         $country=Country::findOrFail($country['country_id']);
+         return response([$country,$population],200);
 
     }
-    public function maxCouuntry(){
-        $yearcountry=YearCountry::where('year',2018)->min('population');
-        $country=Country::findOrFail($yearcountry->country_id);
-        return response($country,200);
+
+    public function maxCountry(){
+
+        $population=YearCountry::where('year_id',58)->max('population');
+       $country=YearCountry::where('population',$population)->first();
+        $country=Country::findOrFail($country['country_id']);
+        return response([$country,$population],200);
         
     }
 

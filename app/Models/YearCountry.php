@@ -15,4 +15,12 @@ class YearCountry extends Model
         
         
     ];
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
+    public function year()
+    {
+        return $this->belongsTo(Year::class);
+    }
 }

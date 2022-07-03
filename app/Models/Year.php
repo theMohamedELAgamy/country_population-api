@@ -13,5 +13,8 @@ class Year extends Model
         
         
     ];
+    public function yearcountry() {
+        return $this->hasMany(Holiday::class);
+    }
 
 }

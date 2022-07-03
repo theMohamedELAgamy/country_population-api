@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\V1;
+use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCountryRequest;
@@ -21,9 +22,9 @@ class CountryController extends Controller
     public function syncCountries(){
         return($this->country->syncCountries());
     }
-    public function getAll()
+    public function getAll(Request $request)
     {
-        return($this->country->listCountries());
+        return($this->country->listCountries($request));
         
     }
 
@@ -46,13 +47,14 @@ class CountryController extends Controller
      */
     public function getCountry($country_id)
     {
-        dd($country_id);
+        
         return($this->country->getOneCountry($country_id));
     }
 
 
     public function getMaxCountry()
     {
+        
         return($this->country->maxCountry());
     }
 

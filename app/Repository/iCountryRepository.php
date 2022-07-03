@@ -2,9 +2,9 @@
 namespace App\Repository;
 interface iCountryRepository{
     public function syncCountries();
-    public function listCountries();
+    public function listCountries($request);
     public function getOneCountry($country_id);
-    public function minCouuntry();
-    public function maxCouuntry();
+    public function minCountry();
+    public function maxCountry();
 }
 ?>

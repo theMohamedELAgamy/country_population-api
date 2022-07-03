@@ -13,4 +13,7 @@ class Country extends Model
         'code',
         
     ];
+    public function yearcountry() {
+        return $this->hasMany(YearCountry::class);
+    }
 }
