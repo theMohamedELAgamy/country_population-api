@@ -73,10 +73,12 @@ use  App\Http\Resources\V1\CountryResource;
 
 
     public function maxminCountry(){
-        $minpopulation=YearCountry::where('year_id',58)->min('population');
+        $lastyear=Year::max('year');
+        $lastyear_id=Year::where('year',$lastyear)->first();
+        $minpopulation=YearCountry::where('year_id',$lastyear_id->id)->min('population');
         $mincountry=YearCountry::where('population',$minpopulation)->first();
          $mincountry=Country::findOrFail($mincountry['country_id']);
-        $maxpopulation=YearCountry::where('year_id',58)->max('population');
+        $maxpopulation=YearCountry::where('year_id',$lastyear_id->id)->max('population');
        $maxcountry=YearCountry::where('population',$maxpopulation)->first();
         $maxcountry=Country::findOrFail($maxcountry['country_id']);
         return response(['min country'=>['Country'=>$mincountry->name,'min population'=>$minpopulation],'max country'=>['Country'=>$maxcountry->name,'max population'=>$maxpopulation]],200);
